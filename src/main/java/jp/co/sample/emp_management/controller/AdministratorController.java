@@ -71,8 +71,13 @@ public class AdministratorController {
 	 */
 	@RequestMapping("/insert")
 	public String insert(@Validated InsertAdministratorForm form,
-			                   BindingResult result, Model model) {
+			                   BindingResult result, 
+			                   String configPassword,Model model) {
 		if(result.hasErrors()) {
+			return toInsert(model);
+		}
+		if(!(form.getPassword().equals(configPassword))) {
+			model.addAttribute("passwordError", "パスワードが一致しません");
 			return toInsert(model);
 		}
 		Administrator administrator = new Administrator();
