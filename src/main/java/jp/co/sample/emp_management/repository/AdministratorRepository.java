@@ -3,6 +3,7 @@ package jp.co.sample.emp_management.repository;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -44,7 +45,8 @@ public class AdministratorRepository {
 	 * @return 管理者情報 存在しない場合はnullを返します
 	 */
 	public Administrator findByMailAddressAndPassward(String mailAddress, String password) {
-		String sql = "select id,name,mail_address,password from administrators where mail_address= '" + mailAddress + "' and password='" + password + "'";
+		String sql = "select id,name,mail_address,password from administrators where mail_address= '" + mailAddress
+				+ "' and password='" + password + "'";
 		SqlParameterSource param = new MapSqlParameterSource();
 		List<Administrator> administratorList = template.query(sql, param, ADMINISTRATOR_ROW_MAPPER);
 		if (administratorList.size() == 0) {
@@ -58,10 +60,14 @@ public class AdministratorRepository {
 	 * 
 	 * @param administrator 管理者情報
 	 */
-	public void insert(Administrator administrator) {
+	public int insert(Administrator administrator) {
 		SqlParameterSource param = new BeanPropertySqlParameterSource(administrator);
 		String sql = "insert into administrators(name,mail_address,password)values(:name,:mailAddress,:password);";
-		template.update(sql, param);
+		try {
+			return template.update(sql, param);
+		} catch (DataAccessException e) {
+			return 0;
+		}
 	}
 
 	/**
