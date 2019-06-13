@@ -33,6 +33,17 @@ public class EmployeeService {
 	}
 	
 	/**
+	 * 曖昧検索から従業員一覧情報を入社日順で取得します.
+	 * 
+	 * @param 　曖昧検索用の文字
+	 * @return 全従業員一覧 従業員が存在しない場合はサイズ0件の従業員一覧を返します
+	 */
+	public List<Employee> showListOfNameForSearch(String nameForSearch) {
+		List<Employee> employeeList = employeeRepository.findAllOfNameForSearch(nameForSearch);
+		return employeeList;
+	}
+	
+	/**
 	 * 従業員情報を取得します.
 	 * 
 	 * @param id ID

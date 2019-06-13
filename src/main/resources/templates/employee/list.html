@@ -64,6 +64,13 @@
 
 <!-- ここにモックのtable要素を貼り付けます -->
 
+                <form th:action="@{/employee/like-search}" method="post">
+                  <input type="text" name="nameForSearch">
+                  <button type="submit">を含む名前の従業員一覧画面を表示</button>
+                </form>
+                
+                <div th:text="${message}"></div>
+
 				<table class="table table-striped">
 					<thead>
 						<tr>

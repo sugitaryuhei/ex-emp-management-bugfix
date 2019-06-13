@@ -1,5 +1,6 @@
 package jp.co.sample.emp_management.repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +55,21 @@ public class EmployeeRepository {
 
 		List<Employee> developmentList = template.query(sql, EMPLOYEE_ROW_MAPPER);
 
+		return developmentList;
+	}
+
+	/**
+	 * 曖昧検索から従業員一覧情報を入社日順で取得します.
+	 * 
+	 * @param 曖昧検索用の文字
+	 * @return 全従業員一覧 従業員が存在しない場合はサイズ0件の従業員一覧を返します
+	 */
+	public List<Employee> findAllOfNameForSearch(String nameForSearch) {
+		String sql = "SELECT id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count FROM employees "
+				+ " where name like :nameForSearch order by hire_date ;";
+		SqlParameterSource param = new MapSqlParameterSource().addValue("nameForSearch", "%" + nameForSearch + "%");
+		List<Employee> developmentList = new ArrayList<Employee>();
+		developmentList = template.query(sql, param, EMPLOYEE_ROW_MAPPER);
 		return developmentList;
 	}
 
