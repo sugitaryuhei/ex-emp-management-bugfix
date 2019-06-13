@@ -58,10 +58,10 @@ public class AdministratorRepository {
 	 * 
 	 * @param administrator 管理者情報
 	 */
-	public int insert(Administrator administrator) {
+	public void insert(Administrator administrator) {
 		SqlParameterSource param = new BeanPropertySqlParameterSource(administrator);
 		String sql = "insert into administrators(name,mail_address,password)values(:name,:mailAddress,:password);";
-		return template.update(sql, param);
+		template.update(sql, param);
 	}
 
 	/**

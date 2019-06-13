@@ -79,14 +79,15 @@ public class AdministratorController {
 			result.rejectValue("password", null, "パスワードが一致しません");
 		}
 		
-		int numOfResult = administratorService.insert(administrator);
-		if (numOfResult == 0) {
+		if (administratorService.isUsedMailAddress(form.getMailAddress())){
 			result.rejectValue("mailAddress", null, "メールアドレスがすでに登録されています");
 		}
 		
 		if (result.hasErrors()) {
 			return toInsert();
 		}
+		
+		administratorService.insert(administrator);
 		
 		return "redirect:/";
 	}
