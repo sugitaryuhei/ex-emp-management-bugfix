@@ -54,7 +54,7 @@
 								<div class="row">
 									<div class="col-sm-12">
 										<label for="mailAddress">
-											メールアドレス:<span th:text="${error}" >エラー</span>
+											メールアドレス:
 										</label>
 										<label th:if="${#fields.hasErrors('mailAddress')}" th:errors="*{mailAddress}" class="error-messages">
 											メールアドレスを入力してください
@@ -83,7 +83,7 @@
 								<div class="row">
 									<div class="col-sm-12">
 										<label for="configPasswaord">
-											パスワード(確認用):<span th:text="${passwordError}" >エラー</span>
+											パスワード(確認用):
 										</label>
 										<input type="password" name="configPassword" id="configPassword" class="form-control" placeholder="password">
 									</div>
