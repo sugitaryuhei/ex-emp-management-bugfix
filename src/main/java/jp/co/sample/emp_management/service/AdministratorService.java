@@ -21,23 +21,21 @@ public class AdministratorService {
 	private AdministratorRepository administratorRepository;
 
 	/**
-	 * 管理者情報を登録します.
-	 * すでにメールアドレスが登録されている場合は0を返します.
+	 * 管理者情報を登録します. すでにメールアドレスが登録されている場合は0を返します.
 	 * 
 	 * @param administrator 管理者情報
 	 */
 	public void insert(Administrator administrator) {
 		administratorRepository.insert(administrator);
 	}
-	
+
 	public boolean isUsedMailAddress(String mailAddress) {
 		Administrator administrator = administratorRepository.findByMailAddress(mailAddress);
-		if(administrator == null) {
+		if (administrator == null) {
 			return false;
-		}else {
+		} else {
 			return true;
 		}
-		
 	}
 
 	/**

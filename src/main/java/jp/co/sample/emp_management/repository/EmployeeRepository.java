@@ -99,4 +99,52 @@ public class EmployeeRepository {
 		String updateSql = "UPDATE employees SET dependents_count=:dependentsCount WHERE id=:id";
 		template.update(updateSql, param);
 	}
+	
+	public int maxID() {
+		System.out.println("maxID");
+		String sql = "select max(id) from employees";
+		SqlParameterSource param = new MapSqlParameterSource();
+		int maxID  =  template.queryForObject(sql, param, Integer.class);
+		return maxID;
+	}
+	
+	/**
+	 * 従業員情報を追加します.
+	 * 
+	 * @param employee 入力された従業員情報
+	 */
+	public void insert(Employee employee) {
+		System.out.println("3");
+		System.out.println(employee);
+		String sql = "insert into employees (id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count)"
+			         	+ " values(:id,:name,:image,:gender,:hireDate,:mailAddress,:zipCode,:address,:telephone,:salary,:characteristics,:dependentsCount);";
+		SqlParameterSource param = new BeanPropertySqlParameterSource(employee);
+		System.out.println("5");
+		template.update(sql, param);
+		System.out.println("4");
+	}
+	
+	/**
+	 * メールアドレスから従業員情報を取得します.
+	 * 
+	 * @param mailAddress 検索したい従業員のメールアドレス
+	 * @return 検索された従業員情報
+	 * @exception 従業員が存在しない場合はnullを返します
+	 */
+	public Employee  findByMailAddress(String mailAddress) {
+		String sql = "SELECT id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count FROM employees WHERE mail_address=:mailAddress";
+		
+		SqlParameterSource param = new MapSqlParameterSource().addValue("mailAddress", mailAddress);
+		
+		List<Employee> employees = template.query(sql, param,EMPLOYEE_ROW_MAPPER);
+		if(employees.size()==0) {
+			return null;
+		}else {
+			return employees.get(0);
+		}
+		
+		//Employee development = template.queryForObject(sql, param, EMPLOYEE_ROW_MAPPER);
+		//return development;
+	}
+	
 }

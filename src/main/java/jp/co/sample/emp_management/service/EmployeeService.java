@@ -63,4 +63,32 @@ public class EmployeeService {
 	public void update(Employee employee) {
 		employeeRepository.update(employee);
 	}
+	
+	/**
+	 * メールアドレスが使われているか判断します.
+	 * 
+	 * @param mailAddress 検索したい従業員のメールアドレス
+	 * @return　存在する場合はtrue
+	 * 　　　　　　　　存在しない場合はfalse
+	 */
+	public boolean isUsedMailAddress(String mailAddress) {
+		Employee employee = employeeRepository.findByMailAddress(mailAddress);
+		if (employee == null) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
+	
+	/**
+	 * 従業員情報を追加します.
+	 * 
+	 * @param employee 入力された従業員情報
+	 */
+	synchronized public void insert(Employee employee) {
+		int maxID = employeeRepository.maxID();
+		employee.setId(maxID + 1);
+		employeeRepository.insert(employee);
+	}
 }
