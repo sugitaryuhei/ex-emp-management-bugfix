@@ -71,9 +71,6 @@ public class AdministratorController {
 	@RequestMapping("/insert")
 	public String insert(@Validated InsertAdministratorForm form, BindingResult result, String configPassword,
 			Model model) {
-		Administrator administrator = new Administrator();
-		// フォームからドメインにプロパティ値をコピー
-		BeanUtils.copyProperties(form, administrator);
 		
 		if (!(form.getPassword().equals(configPassword))) {
 			result.rejectValue("password", null, "パスワードが一致しません");
@@ -86,6 +83,9 @@ public class AdministratorController {
 		if (result.hasErrors()) {
 			return toInsert();
 		}
+		Administrator administrator = new Administrator();
+		// フォームからドメインにプロパティ値をコピー
+		BeanUtils.copyProperties(form, administrator);
 		
 		administratorService.insert(administrator);
 		
@@ -113,7 +113,7 @@ public class AdministratorController {
 	 * @return ログイン後の従業員一覧画面
 	 */
 	@RequestMapping("/login")
-	public String login(LoginForm form, BindingResult result, Model model) {
+	public String login(LoginForm form, BindingResult result, Model model) {				
 		Administrator administrator = administratorService.login(form.getMailAddress(), form.getPassword());
 		if (administrator == null) {
 			result.addError(new ObjectError("loginError", "メールアドレスまたはパスワードが不正です。"));
