@@ -1,8 +1,7 @@
 package jp.co.sample.emp_management.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,10 +21,9 @@ public class AdministratorService {
 	@Autowired
 	private AdministratorRepository administratorRepository;
 	
-	@Bean
-	BCryptPasswordEncoder BCryptPasswordEncoder(){
-		return new BCryptPasswordEncoder();
-	}
+	@Autowired
+	private PasswordEncoder encoder;
+
 
 	/**
 	 * 管理者情報を登録します. すでにメールアドレスが登録されている場合は0を返します.
@@ -33,7 +31,7 @@ public class AdministratorService {
 	 * @param administrator 管理者情報
 	 */
 	public void insert(Administrator administrator) {
-		String encodedPassword = BCryptPasswordEncoder().encode(administrator.getPassword());
+		String encodedPassword = encoder.encode(administrator.getPassword());
 		 administrator.setPassword(encodedPassword);
 		administratorRepository.insert(administrator);
 	}
@@ -56,7 +54,7 @@ public class AdministratorService {
 	 */
 	public Administrator login(String mailAddress, String passward) {
 		Administrator administrator = administratorRepository.findByMailAddress(mailAddress);
-		if (BCryptPasswordEncoder().matches(passward, administrator.getPassword())) {
+		if (encoder.matches(passward, administrator.getPassword())) {
 			return administrator;
 		}
 		return null;
