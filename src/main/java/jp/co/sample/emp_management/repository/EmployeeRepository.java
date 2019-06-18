@@ -57,6 +57,23 @@ public class EmployeeRepository {
 
 		return developmentList;
 	}
+	
+	/**
+	 * ページの従業員一覧情報を入社日順で取得します.
+	 * 
+	 * @return 全従業員一覧 従業員が存在しない場合はサイズ0件の従業員一覧を返します
+	 */
+	public List<Employee> findAllOfPageNumber(Integer page, Integer pageNumber) {
+		String sql = "SELECT id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count FROM employees "
+				+ " order by hire_date,id limit :limit offset :offset ";
+		
+		SqlParameterSource param = new MapSqlParameterSource()
+				                                 .addValue("limit", pageNumber)
+				                                 .addValue("offset", pageNumber*(page-1));
+		List<Employee> developmentList = template.query(sql, param, EMPLOYEE_ROW_MAPPER);
+		
+		return developmentList;
+	}
 
 	/**
 	 * 曖昧検索から従業員一覧情報を入社日順で取得します.

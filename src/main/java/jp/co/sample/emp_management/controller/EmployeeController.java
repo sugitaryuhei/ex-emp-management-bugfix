@@ -30,6 +30,8 @@ public class EmployeeController {
 
 	@Autowired
 	private EmployeeService employeeService;
+	
+	static final Integer PAGENUMBER = 10;
 
 	/**
 	 * 使用するフォームオブジェクトをリクエストスコープに格納する.
@@ -55,10 +57,21 @@ public class EmployeeController {
 	 * @param model モデル
 	 * @return 従業員一覧画面
 	 */
+//	@RequestMapping("/showList")
+//	public String showList(Model model) {
+//		List<Employee> employeeList = employeeService.showList();
+//		model.addAttribute("employeeList", employeeList);
+//		return "employee/list";
+//	}
 	@RequestMapping("/showList")
-	public String showList(Model model) {
-		List<Employee> employeeList = employeeService.showList();
+	public String showList(Integer page, Model model) {
+		if(page == null) {
+			page = 1;
+		}
+		List<Employee> employeeList = employeeService.showListOfPageNumber(page, PAGENUMBER);
 		model.addAttribute("employeeList", employeeList);
+		model.addAttribute("page", page);
+		model.addAttribute("employeeListSize", employeeList.size());
 		return "employee/list";
 	}
 
@@ -170,6 +183,6 @@ public class EmployeeController {
 		employee.setDependentsCount(Integer.parseInt(form.getDependentsCount()));
 
 		employeeService.insert(employee);
-		return showList(model);
+		return showList(1,model);
 	}
 }

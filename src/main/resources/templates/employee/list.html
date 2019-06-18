@@ -68,21 +68,6 @@
 
 <!-- ここにモックのtable要素を貼り付けます -->
 
-
-<form action="xxx.php" method="post">
-<fieldset>
-エリア:
-<input type="text" name="yourarea" autocomplete="on" list="tokyo">
-<datalist id="tokyo">
-<option value="渋谷">
-<option value="新宿">
-<option value="池袋">
-</datalist><br>
-<input type="submit" value="送信">
-</fieldset>
-</form>
-
-
                 <form th:action="@{/employee/like-search}" method="post">
                 <fieldset>
                   <input type="text" name="nameForSearch" list="employees" autocomplete="on">
@@ -119,8 +104,10 @@
 						</tr>
 					</tbody>
 				</table>
-
-
+				
+				<a th:if="${page>1}" th:href="@{'/employee/showList?page=' + ${page-1}}"> 前へ </a>
+				<a th:if="${employeeListSize==10}" th:href="@{'/employee/showList?page=' + ${page+1}}"> 次へ </a>
+				
 <!-- ここから下を編集する必要はありません -->
 
 			</div>

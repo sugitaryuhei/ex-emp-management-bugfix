@@ -33,6 +33,16 @@ public class EmployeeService {
 	}
 	
 	/**
+	 * ページの従業員情報を全件取得します.
+	 * 
+	 * @return　従業員情報一覧
+	 */
+	public List<Employee> showListOfPageNumber(Integer page, Integer pageNumber) {
+		List<Employee> employeeList = employeeRepository.findAllOfPageNumber(page, pageNumber);
+		return employeeList;
+	}
+	
+	/**
 	 * 曖昧検索から従業員一覧情報を入社日順で取得します.
 	 * 
 	 * @param 　曖昧検索用の文字
